@@ -1,0 +1,15 @@
+# Environment variables
+.env
+.env.*
+backend/.env
+frontend/.env
+
+# Dependencies
+node_modules/
+venv/
+__pycache__/
+
+# Build & Logs
+dist/
+build/
+*.log
