@@ -23,16 +23,22 @@ async def generate_questions(
     job_description: str = Form(...),
     resume: UploadFile = File(...)
 ):
-    await validate_file(resume)
-    resume_text = await extract_text(resume)
+    try:
+        await validate_file(resume)
+        resume_text = await extract_text(resume)
 
-    resp = await generate_questions_intro(job_title=job_title, job_description=job_description, resume_text=resume_text)
+        resp = await generate_questions_intro(job_title=job_title, job_description=job_description, resume_text=resume_text)
 
-    session = create_session()
-    session.questions = resp.get("questions")
-    session.introText = resp.get("introText")
+        session = create_session()
+        session.questions = resp.get("questions")
+        session.introText = resp.get("introText")
 
-    return { "session_id": session.session_id }
+        return { "session_id": session.session_id }
+        
+    except Exception as e:
+    
+        print(f"CRITICAL BACKEND ERROR: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 
 @router.get("/start/{session_id}")
@@ -66,7 +72,7 @@ async def submit_answer(answerReq: AnswerRequest):
                 "nextQuestion": current_question
             }
         
-        # ২. বুঝতে না পারলে সহজ ভাষায় ঘুরিয়ে প্রশ্নটি পাঠাবে
+        
         elif any(word in user_text for word in EXPLAIN_SIMPLE):
             simplified_question = await rephrase_question(current_question)
             return {
@@ -74,7 +80,7 @@ async def submit_answer(answerReq: AnswerRequest):
                 "nextQuestion": simplified_question
             }
 
-    # স্বাভাবিক উত্তর হলে সেশনে সেভ করবে
+    
     save_answer(answerReq.answer, answerReq.skip, session)
 
     if session.status == InteriewStatusEnum.COMPLETED:
