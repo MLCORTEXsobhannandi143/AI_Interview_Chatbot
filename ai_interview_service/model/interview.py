@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional
+from typing import Optional,Dict,Any
 from pydantic import BaseModel
 
 
@@ -19,3 +19,15 @@ class InterviewSession(BaseModel):
     answers: list[Answer] = []
     current_index: int = 0
     introText: str = ""
+    report: Optional[Dict[str, Any]] = None
+
+class QuestionsIntroSchema(BaseModel):
+    questions: list[str]
+    introText: str
+    candidate_name: str
+
+class ReportSchema(BaseModel):
+    score: str
+    correct_answer: int
+    improvment_area: list[str]
+

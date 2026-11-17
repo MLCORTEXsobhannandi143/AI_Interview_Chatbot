@@ -1,66 +1,57 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8000/interview";
+const apiClient = axios.create({
+  baseURL: "http://localhost:8000/interview",
+  timeout: 30000, // If it take time more than 30 second then it generate error
+});
 
 export const startInterviewAPI = async (sessionId) => {
   try {
-    const response = await axios.get(`${BASE_URL}/start/${sessionId}`);
+    const response = await apiClient.get(`/start/${sessionId}`);
     return response.data;
   } catch (error) {
-    console.error("Error: ", error);
+    console.error("Start Interview Error:", error.response?.data || error.message);
+    return null;
   }
-
-  return null;
 };
 
 export const submitAPI = async (payload) => {
   try {
-    const response = await axios.post(`${BASE_URL}/submit`, payload);
+    const response = await apiClient.post("/submit", payload);
     return response.data;
   } catch (error) {
-    console.error("Error: ", error);
+    console.error("Submit Answer Error:", error.response?.data || error.message);
+    return null;
   }
-
-  return null;
 };
 
 export const reportAPI = async (sessionId) => {
   try {
-    const response = await axios.get(`${BASE_URL}/report/${sessionId}`);
+    const response = await apiClient.get(`/report/${sessionId}`);
     return response.data;
   } catch (error) {
-    console.error("Error: ", error);
+    console.error("Report Generation Error:", error.response?.data || error.message);
+    return null;
   }
-
-  return null;
 };
 
 export const endInterviewAPI = async (sessionId) => {
   try {
-    const response = await axios.put(`${BASE_URL}/end/${sessionId}`);
+    const response = await apiClient.put(`/end/${sessionId}`);
     return response.data;
   } catch (error) {
-    console.error("Error: ", error);
+    console.error("End Interview Error:", error.response?.data || error.message);
+    return null;
   }
-
-  return null;
 };
 
 export const generateQuestionsAPI = async (formData) => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/generate-question`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    // sending FormData Axios rebuild write Content-Type ও boundary and set it.
+    const response = await apiClient.post("/generate-question", formData);
     return response.data;
   } catch (error) {
-    console.error("Error: ", error);
+    console.error("Generate Questions Error:", error.response?.data || error.message);
+    return null;
   }
-
-  return null;
 };
