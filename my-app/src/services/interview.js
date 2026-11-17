@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:8000/interview",
+  baseURL: "https://ai-chatbot-for-interview.onrender.com",
   timeout: 30000, // If it take time more than 30 second then it generate error
 });
 
