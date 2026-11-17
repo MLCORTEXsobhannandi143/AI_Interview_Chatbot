@@ -7,7 +7,7 @@ const apiClient = axios.create({
 
 export const startInterviewAPI = async (sessionId) => {
   try {
-    const response = await apiClient.get(`/start/${sessionId}`);
+    const response = await apiClient.get(`/interview/start/${sessionId}`);
     return response.data;
   } catch (error) {
     console.error("Start Interview Error:", error.response?.data || error.message);
@@ -17,7 +17,7 @@ export const startInterviewAPI = async (sessionId) => {
 
 export const submitAPI = async (payload) => {
   try {
-    const response = await apiClient.post("/submit", payload);
+    const response = await apiClient.post("/interview/submit", payload);
     return response.data;
   } catch (error) {
     console.error("Submit Answer Error:", error.response?.data || error.message);
@@ -27,7 +27,7 @@ export const submitAPI = async (payload) => {
 
 export const reportAPI = async (sessionId) => {
   try {
-    const response = await apiClient.get(`/report/${sessionId}`);
+    const response = await apiClient.get(`/interview/report/${sessionId}`);
     return response.data;
   } catch (error) {
     console.error("Report Generation Error:", error.response?.data || error.message);
@@ -37,7 +37,7 @@ export const reportAPI = async (sessionId) => {
 
 export const endInterviewAPI = async (sessionId) => {
   try {
-    const response = await apiClient.put(`/end/${sessionId}`);
+    const response = await apiClient.put(`/interview/end/${sessionId}`);
     return response.data;
   } catch (error) {
     console.error("End Interview Error:", error.response?.data || error.message);
@@ -47,8 +47,8 @@ export const endInterviewAPI = async (sessionId) => {
 
 export const generateQuestionsAPI = async (formData) => {
   try {
-    // sending FormData Axios rebuild write Content-Type ও boundary and set it.
-    const response = await apiClient.post("/generate-question", formData);
+    
+    const response = await apiClient.post("/interview/generate-question", formData);
     return response.data;
   } catch (error) {
     console.error("Generate Questions Error:", error.response?.data || error.message);
