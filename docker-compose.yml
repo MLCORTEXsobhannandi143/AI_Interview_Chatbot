@@ -1,0 +1,17 @@
+services:
+  backend:
+    build: ./ai_interview_service   
+    container_name: ai_interview_backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./ai_interview_service/.env 
+
+  frontend:
+    build: ./my-app           
+    container_name: ai_interview_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    restart: always
